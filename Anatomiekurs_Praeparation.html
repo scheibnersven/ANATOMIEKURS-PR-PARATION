@@ -1,0 +1,918 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anatomiekurs Präparation</title>
+  <style>
+    :root {
+      --ink: #16211f;
+      --muted: #62716d;
+      --bg: #eef5f2;
+      --panel: #ffffff;
+      --line: #8fb8ab;
+      --mint: #1f9f7a;
+      --mint-2: #dff4ec;
+      --blue: #345f7c;
+      --gold: #c99a35;
+      --red: #b15b55;
+      --shadow: 0 22px 60px rgba(20, 45, 39, .16);
+      --radius: 8px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background:
+        linear-gradient(115deg, rgba(31,159,122,.12), transparent 34%),
+        linear-gradient(245deg, rgba(52,95,124,.14), transparent 38%),
+        var(--bg);
+      min-height: 100vh;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 44px 20px 30px;
+      border-bottom: 1px solid rgba(22,33,31,.08);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.9), rgba(255,255,255,.58)),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='340' viewBox='0 0 900 340'%3E%3Cg fill='none' stroke='%238fb8ab' stroke-opacity='.38'%3E%3Cpath d='M20 250 C120 80 260 280 380 120 S660 60 860 210' stroke-width='6'/%3E%3Cpath d='M35 265 C135 95 275 295 395 135 S675 75 875 225' stroke-width='2'/%3E%3C/g%3E%3Cg fill='%23345f7c' fill-opacity='.08'%3E%3Ccircle cx='135' cy='118' r='42'/%3E%3Ccircle cx='705' cy='122' r='58'/%3E%3C/g%3E%3C/svg%3E") center/cover;
+      z-index: -1;
+    }
+
+    .hero-inner, main { width: min(1180px, calc(100% - 34px)); margin: 0 auto; }
+    .eyebrow { color: var(--blue); font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
+    h1 { margin: 10px 0 10px; font-size: clamp(36px, 6vw, 72px); line-height: .96; letter-spacing: 0; }
+    .subtitle { max-width: 760px; color: #42524e; font-size: 18px; line-height: 1.55; margin: 0; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 26px;
+      max-width: 520px;
+    }
+    .stat {
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(22,33,31,.1);
+      padding: 14px 16px;
+      border-radius: var(--radius);
+      backdrop-filter: blur(10px);
+    }
+    .stat strong { display: block; font-size: 26px; }
+    .stat span { color: var(--muted); font-size: 13px; }
+
+    main { padding: 36px 0 80px; }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .sound-toggle {
+      border: 1px solid rgba(22,33,31,.14);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 750;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(20,45,39,.08);
+    }
+
+    .timeline {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 76px;
+      padding: 28px 0;
+    }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 7px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: linear-gradient(var(--mint), var(--blue), var(--gold), var(--red));
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,.7);
+    }
+    .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(22,33,31,.1);
+      background: rgba(255,255,255,.92);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: 0 14px 36px rgba(20,45,39,.1);
+      cursor: pointer;
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      min-height: 184px;
+      text-align: left;
+      width: 100%;
+      overflow-wrap: anywhere;
+    }
+    .card:nth-child(odd) { grid-column: 1; transform: translateY(8px); }
+    .card:nth-child(even) { grid-column: 2; transform: translateY(36px); }
+    .card:hover { transform: translateY(0) scale(1.015); box-shadow: var(--shadow); border-color: rgba(31,159,122,.45); }
+    .card::after {
+      content: "";
+      position: absolute;
+      top: 32px;
+      width: 28px;
+      height: 2px;
+      background: rgba(22,33,31,.24);
+    }
+    .card:nth-child(odd)::after { right: -52px; }
+    .card:nth-child(even)::after { left: -52px; }
+
+    .progress-pill {
+      position: absolute;
+      top: -14px;
+      right: 14px;
+      background: #d9f7e8;
+      color: #11684d;
+      border: 1px solid rgba(31,159,122,.28);
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-size: 12px;
+      font-weight: 850;
+      box-shadow: 0 8px 22px rgba(31,159,122,.16);
+    }
+    .meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+    .badge {
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 12px;
+      font-weight: 850;
+      background: var(--mint-2);
+      color: #12684f;
+    }
+    .badge.Pruefung { background: #f7e5e2; color: #823d38; }
+    .badge.Grundlagen { background: #e4edf4; color: #2c536d; }
+    .date { color: var(--muted); font-weight: 750; font-size: 13px; text-align: right; }
+    .card h3 { margin: 0 0 9px; font-size: 20px; line-height: 1.2; }
+    .focus { color: #4d5d59; line-height: 1.45; margin: 0 0 14px; }
+    .card .focus {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .prep {
+      border-left: 4px solid var(--gold);
+      background: #fff8e8;
+      padding: 10px 12px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      font-size: 14px;
+      line-height: 1.4;
+      margin-top: auto;
+    }
+    .card.Pruefung .prep { display: none; }
+    .card.Pruefung { min-height: 140px; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(8, 18, 16, .52);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      width: min(900px, 100%);
+      max-height: min(86vh, 860px);
+      overflow: auto;
+      background: var(--panel);
+      border-radius: 10px;
+      box-shadow: 0 28px 90px rgba(0,0,0,.28);
+      border: 1px solid rgba(255,255,255,.45);
+      animation: rise .22s ease both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+    .modal-head {
+      position: sticky;
+      top: 0;
+      background: linear-gradient(135deg, #ffffff, #edf8f3);
+      border-bottom: 1px solid rgba(22,33,31,.09);
+      padding: 20px;
+      z-index: 2;
+    }
+    .modal-title-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; }
+    .modal h2 { margin: 6px 0 6px; font-size: 28px; }
+    .close {
+      border: 0;
+      background: #17312b;
+      color: #fff;
+      border-radius: 999px;
+      width: 38px;
+      height: 38px;
+      font-size: 24px;
+      line-height: 1;
+      cursor: pointer;
+    }
+    .bar { height: 10px; background: #dce8e3; border-radius: 999px; overflow: hidden; margin-top: 16px; }
+    .bar > span { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--mint), #7bcf9a); transition: width .25s ease; }
+    .modal-body { padding: 20px; display: grid; gap: 18px; }
+    .section {
+      border: 1px solid rgba(22,33,31,.09);
+      border-radius: var(--radius);
+      padding: 16px;
+      background: #fff;
+    }
+    .section.highlight { background: #fff8e8; border-color: rgba(201,154,53,.34); }
+    .section.exam-note { background: #f7e5e2; border-color: rgba(177,91,85,.28); }
+    .section h3 { margin: 0 0 12px; font-size: 17px; }
+    .todo { display: grid; gap: 10px; }
+    label.check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      align-items: start;
+      line-height: 1.42;
+      color: #2f3f3b;
+    }
+    input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--mint); margin-top: 2px; }
+    label.check.done span { color: #7a8783; text-decoration: line-through; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      background: #17312b;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 80;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%); }
+
+    @media (max-width: 780px) {
+      .hero { padding: 30px 0 22px; }
+      .hero-inner, main { width: min(100% - 24px, 1180px); }
+      h1 { font-size: clamp(34px, 12vw, 48px); line-height: 1; }
+      .stats { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .stat { padding: 12px; }
+      .stat strong { font-size: 22px; }
+      main { padding: 24px 0 56px; }
+      .timeline { grid-template-columns: 1fr; gap: 16px; padding-left: 18px; }
+      .timeline::before { left: 0; transform: none; }
+      .card, .card:nth-child(odd), .card:nth-child(even) { grid-column: 1; transform: none; min-height: 0; padding: 16px; }
+      .card:hover { transform: none; }
+      .card::after { left: -25px !important; right: auto !important; width: 18px; }
+      .meta { align-items: flex-start; }
+      .badge { font-size: 11px; }
+      .date { font-size: 12px; max-width: 132px; }
+      .card h3 { font-size: 18px; }
+      .focus, .prep { font-size: 14px; }
+      .toolbar { align-items: flex-start; flex-direction: column; }
+      .sound-toggle { align-self: flex-end; }
+      .modal-backdrop { align-items: flex-end; padding: 0; }
+      .modal { width: 100%; max-height: 92vh; border-radius: 12px 12px 0 0; }
+      .modal-head { padding: 16px; }
+      .modal h2 { font-size: 22px; }
+      .modal-body { padding: 14px; }
+      .section { padding: 14px; }
+    }
+    @media (max-width: 420px) {
+      .stats { grid-template-columns: 1fr; }
+      .progress-pill { top: -12px; right: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Anatomiekurs Präparation</div>
+      <h1>Fahrplan bis zur Prüfung</h1>
+      <div class="stats">
+        <div class="stat"><strong id="statSessions">19</strong><span>Termine</span></div>
+        <div class="stat"><strong id="statProgress">0%</strong><span>Gesamtfortschritt</span></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="toolbar">
+      <button class="sound-toggle" id="soundToggle" type="button">Sound: an</button>
+    </div>
+    <section class="timeline" id="timeline" aria-label="Präparationstermine"></section>
+  </main>
+
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <article class="modal">
+      <div class="modal-head">
+        <div class="modal-title-row">
+          <div>
+            <div class="eyebrow" id="modalDate"></div>
+            <h2 id="modalTitle"></h2>
+            <p class="subtitle" id="modalFocus"></p>
+          </div>
+          <button class="close" id="closeModal" type="button" aria-label="Schließen">×</button>
+        </div>
+        <div class="bar" aria-label="Fortschritt"><span id="modalBar"></span></div>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </article>
+  </div>
+  <div class="toast" id="toast">Fortschritt gespeichert</div>
+
+  <script>
+    const sessions = [
+  {
+    "id": "p1",
+    "code": "P1",
+    "date": "06.05.2026",
+    "time": "",
+    "topic": "Rueckblick: Einfuehrung, Knochen, Feuchtpraeparate",
+    "kind": "Grundlagen",
+    "focus": "P1 ist bereits gelaufen. Es wurden Grundlagen zu Anatomie, Terminologie, Knochen, Gelenktypen und Feuchtpraeparaten besprochen.",
+    "prep": "Rueckblick: keine neuen Aufgaben fuer P1.",
+    "research": [
+      "In P1 wurden eine erste Einfuehrung in die Anatomie und anatomische Terminologie gegeben.",
+      "Besprochen wurden Grundlagen zu Knochen, Gelenktypen und Feuchtpraeparaten.",
+      "Ausserdem wurde in die Terminologie der Knochen eingefuehrt."
+    ],
+    "presentations": [
+      "Keine neuen Vorbereitungsaufgaben: P1 dient nur als Rueckblick auf bereits besprochene Inhalte."
+    ]
+  },
+  {
+    "id": "p2",
+    "code": "P2",
+    "date": "13.05.2026",
+    "time": "",
+    "topic": "Terminologie, Knochen, Feuchtpraeparate",
+    "kind": "Grundlagen",
+    "focus": "Zentral ist die anatomische Terminologie als Arbeitssprache; daran werden Knochen, Knochenpunkte und Feuchtpraeparate erneut besprochen.",
+    "prep": "In der Stunde besprechen: Arbeitsblatt aus der WhatsApp-Gruppe mit Schwerpunkt Terminologie.",
+    "research": [
+      "Arbeitsblatt aus der WhatsApp-Gruppe durcharbeiten und offene Terminologiefragen fuer die Stunde markieren.",
+      "Wiederholen Sie die wichtigsten Lage- und Richtungsbezeichnungen: anterior/posterior, ventral/dorsal, medial/lateral, proximal/distal, kranial/kaudal, superficial/profund.",
+      "Ordnen Sie Hauptebenen, Bewegungsachsen und typische Bewegungsbegriffe und formulieren Sie jeweils ein Beispiel am Koerper oder Praeparat.",
+      "Erarbeiten Sie eine kurze Systematik, wie man eine unbekannte anatomische Struktur beschreibt: Name, Lage, Nachbarschaft, Funktion, Innervation, Gefaessversorgung."
+    ],
+    "presentations": [
+      "Arbeitsblatt aus der WhatsApp-Gruppe in der Stunde besprechen: Begriffe klaeren, Beispiele sammeln, Unsicherheiten notieren.",
+      "Eine unbekannte Struktur nach einem festen Schema terminologisch beschreiben.",
+      "Kurzer Umgang mit Feuchtpraeparaten: Was sieht man direkt, was erschliesst man? (gemeinsam mit Tutor besprochen)"
+    ]
+  },
+  {
+    "id": "p3",
+    "code": "P3",
+    "date": "20.05.2026",
+    "time": "",
+    "topic": "Osteologie, Ossifikation, Gelenke",
+    "kind": "Grundlagen",
+    "focus": "Vertiefung der Osteologie und sinnvoller Uebergang zu Gelenken, Achsen, Bewegungen und ersten Muskelbegriffen.",
+    "prep": "Eine Gelenkart mit Achsen und Bewegungen vorstellen.",
+    "research": [
+      "Erarbeiten Sie die Knochentypen: Roehrenknochen, kurze Knochen, platte Knochen, unregelmaessige Knochen und Sesambeine.",
+      "Beschreiben Sie den Aufbau eines Roehrenknochens mit Diaphyse, Metaphyse, Epiphyse, Kompakta, Spongiosa, Periost und Markraum.",
+      "Schauen Sie sich Feuchtpraeparate mit der Frage an, welche Strukturen sicher erkennbar sind und welche nur ueber Nachbarschaften erschlossen werden koennen.",
+      "Vergleichen Sie Ersatzknochen und Deckknochen sowie enchondrale und desmale Ossifikation in Grundzuegen.",
+      "Ordnen Sie Knorpeltypen, Gelenkknorpel und Knochenwachstum knapp ein, ohne in Histologie-Details abzurutschen.",
+      "Suchen Sie wichtige Knochenpunkte, die spaeter als Muskelursprung, Muskelansatz oder Leitstruktur wichtig werden.",
+      "Wiederholen Sie Synarthrosen und Diarthrosen und grenzen Sie beide sauber voneinander ab.",
+      "Erstellen Sie eine kurze Uebersicht der Gelenkarten mit Achsen, Freiheitsgraden und typischen Bewegungen.",
+      "Beschreiben Sie den Grundaufbau eines echten Gelenks: Gelenkflaechen, Gelenkknorpel, Kapsel, Baender, Hilfseinrichtungen.",
+      "Erarbeiten Sie die Begriffe Ursprung, Ansatz, Innervation, Funktion, Synergist und Antagonist.",
+      "Klaeren Sie Hilfseinrichtungen von Muskeln und Sehnen: Sehne, Aponeurose, Retinaculum, Schleimbeutel, Sehnenscheide, Sesambein."
+    ],
+    "presentations": [
+      "Knochentypen mit je einem Beispiel vorstellen.",
+      "Aufbau eines Roehrenknochens mit Kompakta, Spongiosa, Periost und Markraum erklaeren.",
+      "Ersatzknochen, Deckknochen, enchondrale und desmale Ossifikation in Grundzuegen voneinander abgrenzen.",
+      "Wichtige tastbare Knochenpunkte als Orientierungspunkte vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Eine Gelenkart mit Achsen und Bewegungen vorstellen.",
+      "Schema zur Muskelbeschreibung: Ursprung, Ansatz, Innervation, Funktion.",
+      "Hilfseinrichtungen von Sehnen und Muskeln an Beispielen erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet)."
+    ]
+  },
+  {
+    "id": "p4",
+    "code": "P4",
+    "date": "08.06.2026",
+    "time": "Montag, 08.06.2026, 16:00-18:00 Uhr",
+    "topic": "Leicheninspektion, Beginn Hautpraeparation",
+    "kind": "Praeparation",
+    "focus": "Erste Orientierung am Koerperspender, Schichtenprinzip und Beginn der Hautpraeparation.",
+    "prep": "Schichtenprinzip der Hautpraeparation vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+    "research": [
+      "Bereiten Sie eine respektvolle und strukturierte Leicheninspektion vor: Koerperregion, Lage, Seite, Oberflaechenmerkmale.",
+      "Wiederholen Sie die Schichten von oberflaechlich nach tief: Haut, Subkutis, oberflaechliche Faszie, tiefe Faszie, Muskeln.",
+      "Erarbeiten Sie, welche Strukturen bei der Hautpraeparation besonders geschont werden sollen: Hautnerven, oberflaechliche Venen, Lymphbahnen.",
+      "Ordnen Sie Dermatome und wichtige Kenndermatome als Verbindung zwischen Oberflaeche und Nervensystem ein.",
+      "Formulieren Sie, wie man einen Befund am Praeparat knapp und sauber beschreibt."
+    ],
+    "presentations": [
+      "Schichtenprinzip der Hautpraeparation vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Epifasziale Leitungsbahnen: Was muss man suchen und schonen?",
+      "Dermatom-Konzept kurz erklaeren."
+    ]
+  },
+  {
+    "id": "p5",
+    "code": "P5",
+    "date": "10.06.2026",
+    "time": "",
+    "topic": "Stamm: Ruecken, Brustwand, Bauchwand",
+    "kind": "Praeparation",
+    "focus": "Stammregionen schichtweise verstehen: Ruecken, Thoraxwand, Bauchwand und Mamma.",
+    "prep": "Spinalnerv und Dermatome am Stamm erklaeren.",
+    "research": [
+      "Wiederholen Sie den Aufbau der Wirbelsaeule, die wichtigsten Baender und die Kopfgelenke.",
+      "Erarbeiten Sie die autochthone Rueckenmuskulatur in Grundzuegen und grenzen Sie sie von eingewanderten Muskeln ab.",
+      "Beschreiben Sie einen Spinalnerv mit Wurzel, Spinalganglion, Ramus dorsalis, Ramus ventralis und Dermatombezug.",
+      "Ordnen Sie Thoraxwand, Interkostalraeume, A. und V. thoracica interna sowie Interkostalnerven ein.",
+      "Bereiten Sie Bauchwand, Rectusscheide, Leistenkanal, Lymphabfluss und Mamma makroskopisch vor."
+    ],
+    "presentations": [
+      "Spinalnerv und Dermatome am Stamm erklaeren.",
+      "Schichten der Bauchwand und Rectusscheide vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Mamma: Blutversorgung und Lymphabfluss kurz vorstellen."
+    ]
+  },
+  {
+    "id": "p6",
+    "code": "P6",
+    "date": "15.06.2026",
+    "time": "",
+    "topic": "Hals I: Faszien und Orientierung",
+    "kind": "Praeparation",
+    "focus": "Topographische Halsorientierung, Faszienraeume und sichere Praeparationslogik.",
+    "prep": "Fascia cervicalis und Halsraeume erklaeren.",
+    "research": [
+      "Teilen Sie den Hals grob in Regionen und Dreiecke ein und nutzen Sie den M. sternocleidomastoideus als Leitstruktur.",
+      "Erarbeiten Sie die Fascia cervicalis mit Lamina superficialis, praetrachealis und praevertebralis.",
+      "Beschreiben Sie die Vagina carotica und ihren Inhalt.",
+      "Ordnen Sie infrahyale Muskulatur, tiefe Halsmuskeln und Skalenusgruppe topographisch ein.",
+      "Klaeren Sie, welche Strukturen bei der Halspräparation besonders gefaehrdet oder schwer zu finden sind."
+    ],
+    "presentations": [
+      "Fascia cervicalis und Halsraeume erklaeren.",
+      "M. sternocleidomastoideus als topographische Leitstruktur vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Vagina carotica: Inhalt und Lagebeziehungen vorstellen."
+    ]
+  },
+  {
+    "id": "p7",
+    "code": "P7",
+    "date": "16.06.2026",
+    "time": "",
+    "topic": "Hals II: Muskeln und Nerven",
+    "kind": "Praeparation",
+    "focus": "Halsmuskeln immer mit Innervation, Funktion und topographischer Lage lernen.",
+    "prep": "Plexus cervicalis mit wichtigsten Aesten vorstellen.",
+    "research": [
+      "Ordnen Sie die infrahyalen Muskeln mit Funktion und Innervation.",
+      "Wiederholen Sie Mm. scaleni, Mm. longus colli/capitis und die kurzen vorderen Kopfmuskeln.",
+      "Erarbeiten Sie N. accessorius mit Bezug zu M. sternocleidomastoideus und M. trapezius.",
+      "Beschreiben Sie den Plexus cervicalis mit Hautnerven, Muskelästen, Ansa cervicalis und N. phrenicus.",
+      "Klaeren Sie die Verbindung von N. hypoglossus zur Ansa cervicalis und den Ast zum M. thyrohyoideus."
+    ],
+    "presentations": [
+      "Plexus cervicalis mit wichtigsten Aesten vorstellen.",
+      "Ansa cervicalis und infrahyale Muskulatur erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "N. accessorius und seine Zielmuskeln kurz darstellen."
+    ]
+  },
+  {
+    "id": "p8",
+    "code": "P8",
+    "date": "17.06.2026",
+    "time": "",
+    "topic": "Hals III: Gefaesse und Lymphabfluss",
+    "kind": "Praeparation",
+    "focus": "Arterien, Venen und Lymphabfluss des Halses topographisch zusammenfuehren.",
+    "prep": "A. subclavia mit Hauptaesten vorstellen.",
+    "research": [
+      "Erarbeiten Sie A. subclavia und ihre wichtigen Aeste: A. vertebralis, A. thoracica interna, Truncus thyrocervicalis, Truncus costocervicalis.",
+      "Ordnen Sie die A. carotis communis in die Vagina carotica und die Halsregionen ein.",
+      "Wiederholen Sie V. jugularis interna und V. jugularis externa mit wichtigen Zufluessen.",
+      "Beschreiben Sie Halslymphknoten und Lymphabfluss in Grundzuegen.",
+      "Verknuepfen Sie Gefaesse, Nerven und Muskeln in einer gemeinsamen topographischen Skizze."
+    ],
+    "presentations": [
+      "A. subclavia mit Hauptaesten vorstellen.",
+      "V. jugularis interna/externa und wichtige Zufluesse erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Lymphabfluss am Hals kurz vorstellen."
+    ]
+  },
+  {
+    "id": "p9",
+    "code": "P9",
+    "date": "19.06.2026",
+    "time": "",
+    "topic": "Untere Extremitaet I: Becken und Huefte",
+    "kind": "Praeparation",
+    "focus": "Becken, Huefte und Plexus lumbosacralis als Einstieg in die untere Extremitaet.",
+    "prep": "Hueftgelenk mit Baendern und Bewegungen vorstellen.",
+    "research": [
+      "Wiederholen Sie den knoechernen Beckenguertel mit Os coxae, Sacrum, Art. sacroiliaca und Symphysis pubis.",
+      "Beschreiben Sie das Hueftgelenk mit Gelenkflaechen, Kapsel, Baendern, Achsen und Bewegungen.",
+      "Erarbeiten Sie die innere Beckenmuskulatur und den M. iliopsoas mit Funktion und Innervation.",
+      "Ordnen Sie Hautnerven, Dermatome und erste wichtige Aeste des Plexus lumbosacralis ein.",
+      "Klaeren Sie tastbare Orientierungspunkte am Becken und proximalen Oberschenkel."
+    ],
+    "presentations": [
+      "Hueftgelenk mit Baendern und Bewegungen vorstellen.",
+      "Plexus lumbosacralis als Uebersicht erklaeren.",
+      "M. iliopsoas und innere Beckenmuskulatur vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet)."
+    ]
+  },
+  {
+    "id": "p10",
+    "code": "P10",
+    "date": "22.06.2026",
+    "time": "",
+    "topic": "Untere Extremitaet II: Oberschenkel",
+    "kind": "Praeparation",
+    "focus": "Oberschenkel nach Kompartimenten, Muskeln und Leitungsbahnen strukturieren.",
+    "prep": "Oberschenkelkompartimente mit Innervation vorstellen.",
+    "research": [
+      "Teilen Sie den Oberschenkel in ventrales, mediales und dorsales Kompartiment ein.",
+      "Ordnen Sie die wichtigsten Muskelgruppen jeweils nach Funktion und Innervation.",
+      "Erarbeiten Sie A. femoralis, V. femoralis, N. femoralis, N. obturatorius und N. ischiadicus topographisch.",
+      "Beschreiben Sie Fascia lata, Tractus iliotibialis und wichtige Faszienlogen.",
+      "Verbinden Sie Muskelgruppe, Nerv, Gefaessversorgung und Bewegung in kurzen Pruefungssaetzen."
+    ],
+    "presentations": [
+      "Oberschenkelkompartimente mit Innervation vorstellen.",
+      "Trigonum femorale und Leitungsbahnen erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "N. ischiadicus im Verlauf kurz darstellen."
+    ]
+  },
+  {
+    "id": "p11",
+    "code": "P11",
+    "date": "24.06.2026",
+    "time": "",
+    "topic": "Untere Extremitaet III: Knie und Unterschenkel",
+    "kind": "Praeparation",
+    "focus": "Kniegelenk, Unterschenkelkompartimente und Leitungsbahnen.",
+    "prep": "Kniegelenk mit Baendern und Menisken vorstellen.",
+    "research": [
+      "Wiederholen Sie das Kniegelenk mit Gelenkflaechen, Menisken, Kreuzbaendern, Kollateralbaendern und Bewegungen.",
+      "Teilen Sie den Unterschenkel in Kompartimente ein und ordnen Sie Muskeln, Funktionen und Innervationen zu.",
+      "Erarbeiten Sie die Gefaess- und Nervenverlaeufe um Kniekehle und Unterschenkel.",
+      "Klaeren Sie tastbare Pulse und moegliche Unterbindungsorte.",
+      "Formulieren Sie typische Pruefungsfragen zu Knie, Unterschenkel und Leitungsbahnen."
+    ],
+    "presentations": [
+      "Kniegelenk mit Baendern und Menisken vorstellen.",
+      "Unterschenkelkompartimente mit Innervation erklaeren.",
+      "Fossa poplitea und Leitungsbahnen vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet)."
+    ]
+  },
+  {
+    "id": "p12",
+    "code": "P12",
+    "date": "26.06.2026",
+    "time": "",
+    "topic": "Untere Extremitaet IV: Fuss und Leitungsbahnen",
+    "kind": "Praeparation",
+    "focus": "Fuss, Fussgewoelbe, Sehnenscheiden und Gesamtuebersicht der unteren Extremitaet.",
+    "prep": "Sprunggelenke und Fussgewoelbe vorstellen.",
+    "research": [
+      "Erarbeiten Sie knoechernen Fuss, oberes und unteres Sprunggelenk sowie wichtige Baender.",
+      "Beschreiben Sie Fussgewoelbe und funktionelle Bedeutung der Fussmuskulatur.",
+      "Ordnen Sie Sehnenscheiden, Retinacula und Schleimbeutel am Fuss ein.",
+      "Wiederholen Sie Nerven, Gefaesse und Lymphabfluss vom Becken bis zum Fuss.",
+      "Fassen Sie den Plexus lumbosacralis mit den wichtigsten Versorgungsgebieten zusammen."
+    ],
+    "presentations": [
+      "Sprunggelenke und Fussgewoelbe vorstellen.",
+      "Retinacula und Sehnenscheiden am Fuss erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Plexus lumbosacralis als Gesamtuebersicht praesentieren."
+    ]
+  },
+  {
+    "id": "p13",
+    "code": "P13",
+    "date": "29.06.2026",
+    "time": "",
+    "topic": "Obere Extremitaet I: Schulterguertel",
+    "kind": "Praeparation",
+    "focus": "Schulterguertel, Schultergelenk, Axilla und Verbindung zwischen Rumpf und Arm.",
+    "prep": "Schultergelenk mit Stabilisierung und Bewegungen vorstellen.",
+    "research": [
+      "Wiederholen Sie knoechernen Schulterguertel, Schultergelenk und beteiligte Nebengelenke.",
+      "Beschreiben Sie Baender, Kapsel, Bewegungen und Stabilisierung des Schultergelenks.",
+      "Erarbeiten Sie Schulterguertelmuskeln und eingewanderte Rumpfmuskeln mit Innervation und Funktion.",
+      "Ordnen Sie Axilla, Achselluecken und wichtige Leitungsbahnen als topographischen Raum ein.",
+      "Klaeren Sie, welche Muskeln Schulterblatt, Clavicula, Humerus und Rumpf funktionell verbinden."
+    ],
+    "presentations": [
+      "Schultergelenk mit Stabilisierung und Bewegungen vorstellen.",
+      "Axilla und Achselluecken erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Schulterguertelmuskeln mit Innervation kurz darstellen."
+    ]
+  },
+  {
+    "id": "p14",
+    "code": "P14",
+    "date": "30.06.2026",
+    "time": "",
+    "topic": "Obere Extremitaet II: Oberarm und Ellenbeuge",
+    "kind": "Praeparation",
+    "focus": "Oberarmmuskulatur, Ellenbeuge und Plexus-brachialis-Bezug.",
+    "prep": "Plexus brachialis als Schema vorstellen.",
+    "research": [
+      "Teilen Sie den Oberarm in ventrales und dorsales Kompartiment ein.",
+      "Ordnen Sie Muskeln des Oberarms nach Funktion, Innervation und Gefaessversorgung.",
+      "Erarbeiten Sie die Topographie der Ellenbeuge mit Sehnen, Gefaessen und Nerven.",
+      "Wiederholen Sie den Plexus brachialis im Aufbau und leiten Sie wichtige Endaeste ab.",
+      "Verbinden Sie die Leitungsbahnen der Axilla mit ihrem Verlauf in Oberarm und Ellenbeuge."
+    ],
+    "presentations": [
+      "Plexus brachialis als Schema vorstellen.",
+      "Ellenbeuge und Leitungsbahnen erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Oberarmkompartimente mit Innervation darstellen."
+    ]
+  },
+  {
+    "id": "p15",
+    "code": "P15",
+    "date": "01.07.2026",
+    "time": "",
+    "topic": "Obere Extremitaet III: Unterarm und Hand",
+    "kind": "Praeparation",
+    "focus": "Unterarm- und Handmuskulatur, Faszienlogen, Sehnen und sensible Versorgung.",
+    "prep": "Unterarmlogen mit Hauptnerven vorstellen.",
+    "research": [
+      "Teilen Sie den Unterarm in Flexoren- und Extensorenloge ein und ordnen Sie Muskeln nach Funktion.",
+      "Erarbeiten Sie Handmuskeln in Thenar, Hypothenar, Mittelhandmuskeln und kurze Handmuskeln.",
+      "Beschreiben Sie Faszien, Septa, Retinacula, Sehnenscheiden und Schleimbeutel.",
+      "Ordnen Sie sensible Versorgungsgebiete von N. medianus, N. ulnaris und N. radialis.",
+      "Klaeren Sie typische Engstellen und klinisch wichtige topographische Punkte der Hand."
+    ],
+    "presentations": [
+      "Unterarmlogen mit Hauptnerven vorstellen.",
+      "N. medianus, N. ulnaris und N. radialis an der Hand vergleichen.",
+      "Retinacula und Sehnenscheiden der Hand erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet)."
+    ]
+  },
+  {
+    "id": "p16",
+    "code": "P16",
+    "date": "03.07.2026",
+    "time": "",
+    "topic": "Obere Extremitaet IV: Leitungsbahnen und Topographie",
+    "kind": "Praeparation",
+    "focus": "Leitungsbahnen der oberen Extremitaet pruefungsnah zusammenfuehren.",
+    "prep": "Plexus brachialis mit Endaesten und Ausfaellen vorstellen.",
+    "research": [
+      "Wiederholen Sie den Plexus brachialis von Wurzeln bis Endaesten.",
+      "Ordnen Sie Verlauf und Versorgungsgebiete der grossen Armnerven.",
+      "Erarbeiten Sie A. axillaris, A. brachialis, Unterarmarterien und wichtige Pulspunkte.",
+      "Klaeren Sie Nervendruckpunkte, Engstellen und typische klinische Bezuege.",
+      "Fassen Sie Axilla, Ellenbeuge und Hand als topographische Pruefungsorte zusammen."
+    ],
+    "presentations": [
+      "Plexus brachialis mit Endaesten und Ausfaellen vorstellen.",
+      "Pulspunkte und Unterbindungsorte der oberen Extremitaet erklaeren (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Axilla bis Hand: Verlauf einer Leitungsbahn nachverfolgen."
+    ]
+  },
+  {
+    "id": "p17",
+    "code": "P17",
+    "date": "06.07.2026",
+    "time": "",
+    "topic": "Wiederholung Bewegungsapparat und Pruefungsvorbereitung",
+    "kind": "Pruefung",
+    "focus": "Gesamter Bewegungsapparat am Koerperspender, Tutor-Durchgang, offene Fragen und zwei Simulationspruefungen fuer Freiwillige.",
+    "prep": "Tutor-Durchgang: gesamter Koerperspender mit Schwerpunkt Bewegungsapparat (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+    "research": [
+      "Gehen Sie den Erwartungshorizont systematisch durch: Stamm, Hals, obere Extremitaet und untere Extremitaet.",
+      "Notieren Sie konkrete Rueckfragen, die im Tutor-Durchgang am Koerperspender geklaert werden sollen.",
+      "Wiederholen Sie die Pruefungslogik: Struktur erkennen, benennen, Lage beschreiben, Funktion nennen, Innervation und Gefaessversorgung ergaenzen.",
+      "Suchen Sie gezielt Restluecken: Knochenpunkte, Gelenke, Muskeln, Faszien, Leitungsbahnen, Dermatome.",
+      "Freiwillige fuer die Simulationspruefungen bereiten sich darauf vor, eine zufaellige Struktur pruefungsnah zu beschreiben."
+    ],
+    "presentations": [
+      "Tutor-Durchgang: gesamter Koerperspender mit Schwerpunkt Bewegungsapparat (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Simulationspruefung 1: freiwillige Person, pruefungsnahes Erkennen und Erklaeren einer Struktur (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
+      "Simulationspruefung 2: freiwillige Person, zweite pruefungsnahe Kurzpruefung mit Rueckmeldung (am Koerperspender zeigen, wenn Praeparationsstand geeignet)."
+    ]
+  },
+  {
+    "id": "p18",
+    "code": "P18",
+    "date": "08.07.2026",
+    "time": "",
+    "topic": "Muendlich-praktische Pruefung 1, Bewegungsapparat",
+    "kind": "Pruefung",
+    "focus": "Echter Pruefungstermin.",
+    "prep": "Echter Pruefungstermin.",
+    "research": [],
+    "presentations": []
+  },
+  {
+    "id": "p19",
+    "code": "P19",
+    "date": "10.07.2026",
+    "time": "",
+    "topic": "Muendlich-praktische Pruefung 1, Bewegungsapparat",
+    "kind": "Pruefung",
+    "focus": "Echter Pruefungstermin.",
+    "prep": "Echter Pruefungstermin.",
+    "research": [],
+    "presentations": []
+  }
+];
+    const storageKey = "anatomiekurs-praeparation-progress-v1";
+    let soundEnabled = true;
+    let activeId = null;
+    let state = {};
+    try {
+      state = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch {
+      state = {};
+    }
+
+    const $ = (sel) => document.querySelector(sel);
+    const timeline = $("#timeline");
+    const modalBackdrop = $("#modalBackdrop");
+    const modalBody = $("#modalBody");
+    const modalBar = $("#modalBar");
+
+    function keyFor(id, type, index) { return `${id}:${type}:${index}`; }
+    function allItems(session) {
+      return [
+        ...session.research.map((text, index) => ({ text, type: "research", index })),
+        ...session.presentations.map((text, index) => ({ text, type: "presentation", index })),
+      ];
+    }
+    function progress(session) {
+      const items = allItems(session);
+      if (!items.length) return null;
+      const done = items.filter((item) => state[keyFor(session.id, item.type, item.index)]).length;
+      return Math.round((done / items.length) * 100);
+    }
+    function save() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        // Fortschritt bleibt in der aktuellen Sitzung erhalten, auch wenn der Browser lokales Speichern blockiert.
+      }
+    }
+
+    function playTone(kind = "tap") {
+      if (!soundEnabled) return;
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = kind === "done" ? "triangle" : "sine";
+      osc.frequency.value = kind === "done" ? 740 : 420;
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.055, ctx.currentTime + 0.015);
+      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.16);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.18);
+    }
+
+    function toast(text) {
+      const el = $("#toast");
+      el.textContent = text;
+      el.classList.add("show");
+      setTimeout(() => el.classList.remove("show"), 1100);
+    }
+
+    function renderTimeline() {
+      timeline.innerHTML = "";
+      sessions.forEach((session) => {
+        const pct = progress(session);
+        const card = document.createElement("button");
+        card.className = `card ${session.kind}`;
+        card.type = "button";
+        card.innerHTML = `
+          ${pct === null ? "" : `<span class="progress-pill">${pct}%</span>`}
+          <div class="meta">
+            <span class="badge ${session.kind}">${session.code} · ${session.kind}</span>
+            <span class="date">${session.time ? escapeHtml(session.time) : session.date}</span>
+          </div>
+          <h3>${escapeHtml(session.topic)}</h3>
+          <p class="focus">${escapeHtml(session.focus)}</p>
+          <div class="prep"><strong>Besprechung/Präp:</strong> ${escapeHtml(session.prep)}</div>
+        `;
+        card.addEventListener("click", () => openModal(session.id));
+        timeline.appendChild(card);
+      });
+      updateStats();
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" }[char]));
+    }
+
+    function updateStats() {
+      const all = sessions.flatMap(allItems);
+      const done = sessions.flatMap((s) => allItems(s).map((item) => state[keyFor(s.id, item.type, item.index)])).filter(Boolean).length;
+      $("#statSessions").textContent = sessions.length;
+      $("#statProgress").textContent = all.length ? `${Math.round(done / all.length * 100)}%` : "0%";
+    }
+
+    function openModal(id) {
+      const session = sessions.find((s) => s.id === id);
+      if (!session) return;
+      activeId = id;
+      $("#modalDate").textContent = `${session.code} · ${session.date} · ${session.kind}`;
+      $("#modalTitle").textContent = session.topic;
+      $("#modalFocus").textContent = session.focus;
+      renderModalBody(session);
+      modalBackdrop.classList.add("open");
+      playTone("tap");
+    }
+
+    function renderModalBody(session) {
+      const pct = progress(session);
+      modalBar.style.width = `${pct ?? 0}%`;
+      if (allItems(session).length === 0) {
+        modalBody.innerHTML = `
+          <section class="section exam-note">
+            <h3>Echter Prüfungstermin</h3>
+            <p class="focus">Für diesen Tag sind keine To-do-Listen, keine Probeprüfungen und keine inhaltlichen Arbeitsaufträge vorgesehen.</p>
+          </section>
+        `;
+        return;
+      }
+      modalBody.innerHTML = `
+        <section class="section">
+          <h3>Rechercheaufgaben und Vorbereitung</h3>
+          <div class="todo">
+            ${session.research.map((task, index) => checkboxHtml(session, "research", index, task)).join("")}
+          </div>
+        </section>
+        <section class="section highlight">
+          <h3>In der Stunde besprechen und ggf. zeigen</h3>
+          <div class="todo">
+            ${session.presentations.map((task, index) => checkboxHtml(session, "presentation", index, task)).join("")}
+          </div>
+        </section>
+      `;
+      modalBody.querySelectorAll("input[type=checkbox]").forEach((box) => {
+        box.addEventListener("change", (event) => {
+          state[event.target.dataset.key] = event.target.checked;
+          if (!event.target.checked) delete state[event.target.dataset.key];
+          event.target.closest("label").classList.toggle("done", event.target.checked);
+          save();
+          renderTimeline();
+          renderModalBody(session);
+          playTone(event.target.checked ? "done" : "tap");
+          toast(event.target.checked ? "Abgehakt" : "Wieder offen");
+        });
+      });
+    }
+
+    function checkboxHtml(session, type, index, text) {
+      const key = keyFor(session.id, type, index);
+      const checked = state[key] ? "checked" : "";
+      const done = state[key] ? " done" : "";
+      return `<label class="check${done}"><input type="checkbox" data-key="${key}" ${checked}><span>${escapeHtml(text)}</span></label>`;
+    }
+
+    $("#closeModal").addEventListener("click", () => modalBackdrop.classList.remove("open"));
+    modalBackdrop.addEventListener("click", (event) => {
+      if (event.target === modalBackdrop) modalBackdrop.classList.remove("open");
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") modalBackdrop.classList.remove("open");
+    });
+    $("#soundToggle").addEventListener("click", () => {
+      soundEnabled = !soundEnabled;
+      $("#soundToggle").textContent = soundEnabled ? "Sound: an" : "Sound: aus";
+      playTone("tap");
+    });
+
+    renderTimeline();
+  </script>
+</body>
+</html>
