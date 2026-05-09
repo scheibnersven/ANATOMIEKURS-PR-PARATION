@@ -111,6 +111,8 @@
     }
     .card {
       position: relative;
+      display: flex;
+      flex-direction: column;
       border: 1px solid rgba(22,33,31,.1);
       background: rgba(255,255,255,.92);
       border-radius: var(--radius);
@@ -120,6 +122,8 @@
       transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
       min-height: 184px;
       text-align: left;
+      width: 100%;
+      overflow-wrap: anywhere;
     }
     .card:nth-child(odd) { grid-column: 1; transform: translateY(8px); }
     .card:nth-child(even) { grid-column: 2; transform: translateY(36px); }
@@ -162,6 +166,12 @@
     .date { color: var(--muted); font-weight: 750; font-size: 13px; text-align: right; }
     .card h3 { margin: 0 0 9px; font-size: 20px; line-height: 1.2; }
     .focus { color: #4d5d59; line-height: 1.45; margin: 0 0 14px; }
+    .card .focus {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
     .prep {
       border-left: 4px solid var(--gold);
       background: #fff8e8;
@@ -169,6 +179,7 @@
       border-radius: 0 var(--radius) var(--radius) 0;
       font-size: 14px;
       line-height: 1.4;
+      margin-top: auto;
     }
     .card.Pruefung .prep { display: none; }
     .card.Pruefung { min-height: 140px; }
@@ -360,15 +371,12 @@
       "Arbeitsblatt aus der WhatsApp-Gruppe durcharbeiten und offene Terminologiefragen fuer die Stunde markieren.",
       "Wiederholen Sie die wichtigsten Lage- und Richtungsbezeichnungen: anterior/posterior, ventral/dorsal, medial/lateral, proximal/distal, kranial/kaudal, superficial/profund.",
       "Ordnen Sie Hauptebenen, Bewegungsachsen und typische Bewegungsbegriffe und formulieren Sie jeweils ein Beispiel am Koerper oder Praeparat.",
-      "Erarbeiten Sie eine kurze Systematik, wie man eine unbekannte anatomische Struktur beschreibt: Name, Lage, Nachbarschaft, Funktion, Innervation, Gefaessversorgung.",
-      "Beschreiben Sie den Aufbau eines Roehrenknochens mit Diaphyse, Metaphyse, Epiphyse, Kompakta, Spongiosa, Periost und Markraum.",
-      "Schauen Sie sich Feuchtpraeparate mit der Frage an, welche Strukturen sicher erkennbar sind und welche nur ueber Nachbarschaften erschlossen werden koennen."
+      "Erarbeiten Sie eine kurze Systematik, wie man eine unbekannte anatomische Struktur beschreibt: Name, Lage, Nachbarschaft, Funktion, Innervation, Gefaessversorgung."
     ],
     "presentations": [
       "Arbeitsblatt aus der WhatsApp-Gruppe in der Stunde besprechen: Begriffe klaeren, Beispiele sammeln, Unsicherheiten notieren.",
       "Eine unbekannte Struktur nach einem festen Schema terminologisch beschreiben.",
-      "Aufbau eines Roehrenknochens mit Kompakta, Spongiosa, Periost und Markraum erklaeren.",
-      "Kurzer Umgang mit Feuchtpraeparaten: Was sieht man direkt, was erschliesst man?"
+      "Kurzer Umgang mit Feuchtpraeparaten: Was sieht man direkt, was erschliesst man? (gemeinsam mit Tutor besprochen)"
     ]
   },
   {
@@ -382,6 +390,8 @@
     "prep": "Eine Gelenkart mit Achsen und Bewegungen vorstellen.",
     "research": [
       "Erarbeiten Sie die Knochentypen: Roehrenknochen, kurze Knochen, platte Knochen, unregelmaessige Knochen und Sesambeine.",
+      "Beschreiben Sie den Aufbau eines Roehrenknochens mit Diaphyse, Metaphyse, Epiphyse, Kompakta, Spongiosa, Periost und Markraum.",
+      "Schauen Sie sich Feuchtpraeparate mit der Frage an, welche Strukturen sicher erkennbar sind und welche nur ueber Nachbarschaften erschlossen werden koennen.",
       "Vergleichen Sie Ersatzknochen und Deckknochen sowie enchondrale und desmale Ossifikation in Grundzuegen.",
       "Ordnen Sie Knorpeltypen, Gelenkknorpel und Knochenwachstum knapp ein, ohne in Histologie-Details abzurutschen.",
       "Suchen Sie wichtige Knochenpunkte, die spaeter als Muskelursprung, Muskelansatz oder Leitstruktur wichtig werden.",
@@ -393,6 +403,7 @@
     ],
     "presentations": [
       "Knochentypen mit je einem Beispiel vorstellen.",
+      "Aufbau eines Roehrenknochens mit Kompakta, Spongiosa, Periost und Markraum erklaeren.",
       "Ersatzknochen, Deckknochen, enchondrale und desmale Ossifikation in Grundzuegen voneinander abgrenzen.",
       "Wichtige tastbare Knochenpunkte als Orientierungspunkte vorstellen (am Koerperspender zeigen, wenn Praeparationsstand geeignet).",
       "Eine Gelenkart mit Achsen und Bewegungen vorstellen.",
@@ -736,7 +747,12 @@
     const storageKey = "anatomiekurs-praeparation-progress-v1";
     let soundEnabled = true;
     let activeId = null;
-    const state = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    let state = {};
+    try {
+      state = JSON.parse(localStorage.getItem(storageKey) || "{}");
+    } catch {
+      state = {};
+    }
 
     const $ = (sel) => document.querySelector(sel);
     const timeline = $("#timeline");
@@ -757,7 +773,13 @@
       const done = items.filter((item) => state[keyFor(session.id, item.type, item.index)]).length;
       return Math.round((done / items.length) * 100);
     }
-    function save() { localStorage.setItem(storageKey, JSON.stringify(state)); }
+    function save() {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        // Fortschritt bleibt in der aktuellen Sitzung erhalten, auch wenn der Browser lokales Speichern blockiert.
+      }
+    }
 
     function playTone(kind = "tap") {
       if (!soundEnabled) return;
