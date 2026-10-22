@@ -51,3 +51,11 @@ Auf Nutzerwunsch beträgt der Kursübergang jetzt 800 statt 400 Millisekunden. A
 - DOM-/Storage-Test prüft Freigabe, Sitzung, dauerhaftes Merken, bestehende Speicherschlüssel, erneutes Sperren und blockierten Browser-Speicher. Für den Erfolgszweig wurde ein passender Digest simuliert, da das Klartextkennwort nicht vorliegt.
 - Syntaxprüfungen für auth.js und app.js erfolgreich.
 - Die Browser-Sperre ersetzt keine serverseitige Zugriffskontrolle.
+
+## Lernprioritäten · Testat 2 (22.10.2026)
+
+- Alle sechs PDF-Seiten gerendert und visuell geprüft; Textfarben zusätzlich pro Textzeichen ausgelesen. 95 Originalpunkte sind durch drei begründete Aufteilungen als 98 Themen abgebildet. 25 Themengebiete, 48 × drei, 36 × zwei und 14 × ein Stern. Die vier Ösophagus-Themen bleiben enthalten.
+- Datentest: eindeutige IDs, vollständige Abdeckung aller 95 Ursprungsnummern, korrekte gemischte Prioritäten, 294 Bewertungsschaltflächen und keine PDF-Verlinkung.
+- Browserprüfung mit ausschließlich lokaler Testsitzung: Bewertung aller drei Kategorien, Aktualisierung der Statistik, Speicherung nach Reload, kombinierte Such-/Prioritäts-/Statusfilter, leere Trefferliste mit deaktiviertem Start, Selbsttest mit automatischem Wechsel, Zurück und Überspringen sowie Abschluss mit offenem Thema.
+- Desktop, 390 px und 320 px geprüft. Kein horizontaler Seitenüberlauf; mobile Bewertungsschaltflächen bleiben bedienbar. Keine Konsolenfehler. Viewport danach zurückgesetzt.
+- Syntaxprüfungen der neuen Module und von app.js erfolgreich. Originale Kennwortprüfung unverändert. Die PDF und die lokale Testsitzung werden nicht veröffentlicht.

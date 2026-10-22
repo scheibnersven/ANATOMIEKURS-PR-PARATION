@@ -27,6 +27,7 @@ Danach http://127.0.0.1:4173 öffnen.
 - `app.js`: Kursansichten, Termine, Widgets und Interaktionen.
 - `auth.js`: Browser-Kennwortabfrage mit dem bisherigen Kurskennwort.
 - `data.js`: Kursmaterialien, Quizdaten und Quellen.
+- `priorities-data.js` / `priorities.js`: Lernprioritäten und lokal gespeicherte Selbsteinschätzungen für Testat 2.
 - `diagrams.js`: interaktive Anatomieskizzen.
 - `assets/`: Bilder, Favicon und Originalkursplan.
 - `docs/`: Analyse, Gestaltung, Bildnachweise und Prüfprotokoll. Einige Dokumente beziehen sich auf die ursprüngliche Arbeitsstruktur mit dem Ordner `dist`; in diesem Paket liegt dessen Inhalt direkt im Hauptverzeichnis.
